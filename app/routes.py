@@ -11,31 +11,30 @@ def home():
 def signin_page():
     return send_from_directory(app.static_folder, 'signin.html')
 
-# @app.route('/signup', methods=['POST'])
-# def signup():
-#     data = request.json
-#     username = data['username']
-#     password = data['password']
-
-#     hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
-
-#     conn = get_db_connection()
-#     cursor = conn.cursor()
-#     try:
-#         cursor.execute("INSERT INTO users (username, password) VALUES (%s, %s)", (username, hashed_password))
-#         conn.commit()
-#     except mysql.connector.Error as err:
-#         return jsonify({"error": str(err)}), 400
-#     finally:
-#         cursor.close()
-#         conn.close()
-
-#     return jsonify({"message": "User created successfully."}), 201
-
 @app.route('/signup', methods=['POST'])
 def signup():
     data = request.json
-    print("Received data:", data)  # Debug print
+    username = data['username']
+    password = data['password']
+
+    hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute("INSERT INTO users (username, password) VALUES (%s, %s)", (username, hashed_password))
+        conn.commit()
+    except mysql.connector.Error as err:
+        return jsonify({"error": str(err)}), 400
+    finally:
+        cursor.close()
+        conn.close()
+
+    return jsonify({"message": "User created successfully."}), 201
+
+@app.route('/signin', methods=['POST'])
+def signin():
+    data = request.json
     username = data['username']
     password = data['password']
 
@@ -54,4 +53,3 @@ def signup():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80)
-
