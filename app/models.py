@@ -8,4 +8,3 @@ def get_db_connection():
         password='password',
         database='mydatabase'
     )
-

@@ -7,4 +7,3 @@ CORS(app)
 bcrypt = Bcrypt(app)
 
 from . import routes
-
